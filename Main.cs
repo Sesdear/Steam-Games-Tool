@@ -28,7 +28,7 @@ namespace SteamGamesTool
         {
             SteamAutoAdd steamAutoAdd = new SteamAutoAdd();
             if (!CheckForExist(appid)) { return; }
-            string url = $"https://steamdatabase1.s3.eu-north-1.amazonaws.com/{appid}.zip";
+            string url = $"";
             if (checkBox.Checked)
             {
                 string selectedPath = "./";
@@ -73,7 +73,7 @@ namespace SteamGamesTool
         }
         public bool CheckForExist(string appid)
         {
-            string url = $"https://steamdatabase1.s3.eu-north-1.amazonaws.com/{appid}.zip";
+            string url = $"";
             try
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -109,3 +109,4 @@ namespace SteamGamesTool
         }
     }
 }
+
