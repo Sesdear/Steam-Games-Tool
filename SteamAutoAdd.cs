@@ -11,14 +11,22 @@ namespace SteamGamesTool
     {
         public static void MoveManifests(string manifest, string dir_name)
         {
+            string targetDir = Path.Combine(Settings1.Default.SteamPath, "config", "depotcache");
+            Directory.CreateDirectory(targetDir); // Создаёт, если не существует
+
+            string destinationPath = Path.Combine(targetDir, Path.GetFileName(manifest));
             Console.WriteLine(Path.GetFileName(manifest));
-            File.Move(manifest, $"C:\\Program Files (x86)\\Steam\\config\\depotcache\\{Path.GetFileName(manifest)}");
+            File.Move(manifest, destinationPath);
         }
+
         public static void MoveLuas(string lua, string dir_name)
         {
-            Console.WriteLine(Path.GetFileName(lua));
-            File.Move(lua, $"C:\\Program Files (x86)\\Steam\\config\\stplug-in\\{Path.GetFileName(lua)}");
+            string targetDir = Path.Combine(Settings1.Default.SteamPath, "config", "stplug-in");
+            Directory.CreateDirectory(targetDir); // Создаёт, если не существует
 
+            string destinationPath = Path.Combine(targetDir, Path.GetFileName(lua));
+            Console.WriteLine(Path.GetFileName(lua));
+            File.Move(lua, destinationPath);
         }
         public static void RestartSteam()
         {
@@ -50,7 +58,7 @@ namespace SteamGamesTool
                 }
 
                 
-                string steamPath = @"C:\Program Files (x86)\Steam\steam.exe";
+                string steamPath = $@"{Settings1.Default.SteamPath}\steam.exe";
 
                 if (!File.Exists(steamPath))
                 {
@@ -70,23 +78,46 @@ namespace SteamGamesTool
 
         public void StartAdd(string path_name)
         {
-            
-            string[] files = Directory.GetFiles($"./{path_name}");
+            string fullPath = Path.Combine("./", path_name);
+            string[] files = Directory.GetFiles(fullPath);
+            bool found = ProcessFiles(files);
+
+            if (!found)
+            {
+                string[] subDirs = Directory.GetDirectories(fullPath);
+                if (subDirs.Length == 1)
+                {
+                    string subDir = subDirs[0];
+                    string[] subFiles = Directory.GetFiles(subDir);
+                    ProcessFiles(subFiles);
+                    RestartSteam();
+                }
+            }
+        }
+
+        private bool ProcessFiles(string[] files)
+        {
+            bool anyFound = false;
+
             foreach (var file in files)
             {
                 string extension = Path.GetExtension(file).ToLower();
                 if (extension == ".lua")
                 {
                     Console.WriteLine($"{file}");
-                    MoveLuas(file, path_name);
+                    MoveLuas(file, "");
+                    anyFound = true;
                 }
                 else if (extension == ".manifest")
                 {
                     Console.WriteLine($"{file}");
-                    MoveManifests(file, path_name);
+                    MoveManifests(file, "");
+                    anyFound = true;
                 }
             }
-            RestartSteam();
+
+            return anyFound;
         }
+
     }
 }

@@ -33,6 +33,7 @@
             appIdTextBox = new TextBox();
             label1 = new Label();
             AutoAddCheckBox = new CheckBox();
+            SettingsButton = new Button();
             SuspendLayout();
             // 
             // DownloadButton
@@ -83,11 +84,22 @@
             AutoAddCheckBox.Text = "Auto Add";
             AutoAddCheckBox.UseVisualStyleBackColor = true;
             // 
+            // SettingsButton
+            // 
+            SettingsButton.Location = new Point(231, 1);
+            SettingsButton.Name = "SettingsButton";
+            SettingsButton.Size = new Size(27, 23);
+            SettingsButton.TabIndex = 5;
+            SettingsButton.Text = "⚙️";
+            SettingsButton.UseVisualStyleBackColor = true;
+            SettingsButton.Click += SettingsButton_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(270, 94);
+            Controls.Add(SettingsButton);
             Controls.Add(AutoAddCheckBox);
             Controls.Add(label1);
             Controls.Add(appIdTextBox);
@@ -108,5 +120,6 @@
         private TextBox appIdTextBox;
         private Label label1;
         private CheckBox AutoAddCheckBox;
+        private Button SettingsButton;
     }
 }

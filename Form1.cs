@@ -41,5 +41,11 @@ namespace SteamGamesTool
             Main main = new Main();
             main.DownloadManifest(appIdTextBox.Text, AutoAddCheckBox);
         }
+
+        private void SettingsButton_Click(object sender, EventArgs e)
+        {
+            Settings settings = new Settings();
+            settings.ShowDialog();
+        }
     }
 }
